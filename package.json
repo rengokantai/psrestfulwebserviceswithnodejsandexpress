@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/rengokantai/psrestfulwebserviceswithnodejsandexpress",
   "dependencies": {
+    "body-parser": "^1.12.3",
     "gulp": "^3.8.11",
     "gulp-nodemon": "^2.0.2",
     "mongoose": "^4.0.1"

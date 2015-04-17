@@ -1,8 +1,9 @@
 /**
  * Created by Hernan Y.Ke on 4/14/15.
  */
-var express=require('express')
-    mongoose=require('mongoose');
+var express=require('express'),
+    mongoose=require('mongoose'),
+    bodyParser=require('body-parser');
 
 var db=mongoose.connect('mongodb://localhost/bookAPI');
 
@@ -11,43 +12,13 @@ var app=express();
 
 var port =process.env.PORT||3000;
 
-var bookRouter =express.Router();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 
-bookRouter.route('/Books').get(function(req,res){
-    //var responseJson ={hello:"My app"};
-
-    var query ={};
-    if(req.query.genre){
-        query.genre=req.query.genre;
-    }
-
-    Book.find(query,function(err,books){
-        if(err){
-            res.status(500).send(err);
-        }
-        else{
-            res.json(books);
-        }
-    });
-   // res.json(responseJson);
-});
-
-
-bookRouter.route('Books/:bookId').get(function(req,res){
-    //var responseJson ={hello:"My app"};
+bookRouter=require('./Routes/bookRoutes');
 
 
 
-    Book.find(req.params.bookId,function(err,books){
-        if(err){
-            res.status(500).send(err);
-        }
-        else{
-            res.json(book);
-        }
-    });
-    // res.json(responseJson);
-});
 
 app.use('/api',bookRouter);
 
