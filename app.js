@@ -15,15 +15,38 @@ var bookRouter =express.Router();
 
 bookRouter.route('/Books').get(function(req,res){
     //var responseJson ={hello:"My app"};
-    Book.find(function(err,books){
+
+    var query ={};
+    if(req.query.genre){
+        query.genre=req.query.genre;
+    }
+
+    Book.find(query,function(err,books){
         if(err){
             res.status(500).send(err);
         }
         else{
             res.json(books);
         }
-    })
-    res.json(responseJson);
+    });
+   // res.json(responseJson);
+});
+
+
+bookRouter.route('Books/:bookId').get(function(req,res){
+    //var responseJson ={hello:"My app"};
+
+
+
+    Book.find(req.params.bookId,function(err,books){
+        if(err){
+            res.status(500).send(err);
+        }
+        else{
+            res.json(book);
+        }
+    });
+    // res.json(responseJson);
 });
 
 app.use('/api',bookRouter);
