@@ -90,6 +90,14 @@ var routes =function(Book){
                         res.json(res.book);
                     }
                 });
+            })
+            .delete(function(res,req){
+                if(err){
+                    res.status(500).send(err);
+                }
+                else{
+                    res.status(204).SEND('Has been removed');
+                }
             });
         // res.json(responseJson);
     });
