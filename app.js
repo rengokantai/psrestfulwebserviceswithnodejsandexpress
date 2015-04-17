@@ -15,12 +15,13 @@ var port =process.env.PORT||3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-bookRouter=require('./Routes/bookRoutes');
+bookRouter=require('./Routes/bookRoutes')(Book);
 
 
 
 
-app.use('/api',bookRouter);
+app.use('/api/Books',bookRouter);
+app.use('/api/Authors',authorRouter);
 
 app.get('/',function(req,res){
     res.send("welcome");

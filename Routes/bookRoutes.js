@@ -3,10 +3,10 @@
  */
 var express=require('express');
 
-var routes =function(){
+var routes =function(Book){
     var bookRouter =express.Router();
 
-    bookRouter.route('/Books')
+    bookRouter.route('/')
         .post(function(req,res){
             var book=new Book(req.body);
 
@@ -33,23 +33,61 @@ var routes =function(){
         });
 
 
-    bookRouter.route('Books/:bookId')
+    bookRouter.use('/:bookId',function(res,req,next){
+
+        Book.findById(req.params.bookId,function(err,book){
+            if(err){
+                res.status(500).send(err);
+            }
+            else if(book){
+                req.book=book;
+                next();
+            }
+
+                else{
+                res.status(404).send('wrong');
+            }
+        });
+    });
+
+
+    bookRouter.route('/:bookId')
 
         .get(function(req,res){
-            //var responseJson ={hello:"My app"};
+            res.json(req.book);
+
+        })
+    .put(function(req,res){
 
 
 
-            Book.find(req.params.bookId,function(err,books){
-                if(err){
-                    res.status(500).send(err);
+        Book.find(req.params.bookId,function(err,book){
+
+                req.book.title=req.body.title;
+                req.book.author=req.body.author;
+                req.book.genre=req.body.genre;
+                req.book.read=req.body.read;
+                req.book.save();
+                res.json(req.book);
+
+        })
+            .patch(function(req,res){
+                for(var p in req.body){
+                    req.book[p]=req.body[p];
                 }
-                else{
-                    res.json(book);
-                }
+
+
+                req.book.save(function(err){
+                    if(err){
+                        res.status(500).send(err);
+                    }
+                    else{
+                        res.json(res.book);
+                    }
+                });
             });
-            // res.json(responseJson);
-        });
+        // res.json(responseJson);
+    });
 
     return bookRouter;
 
