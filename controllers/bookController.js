@@ -6,7 +6,8 @@ var bookController =function(Book){
         var book = new Book(req.body);
 
         book.save();
-        req.status(201).send(book);
+        res.status(201).
+            res.send(book);
     }
 
 

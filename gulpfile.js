@@ -2,7 +2,8 @@
  * Created by Hernan Y.Ke on 4/14/15.
  */
 var gulp=require('gulp'),
-    nodemon=require('nodemon');
+    nodemon=require('nodemon'),
+    gulpMocha=require('gulp-mocha');
 
 
 gulp.task('default',function(){
@@ -18,3 +19,8 @@ gulp.task('default',function(){
             console.log('Wating for restarting');
         });
 });
+
+
+gulp.task('test',function(){
+    gulp.src('tests/*.js',{read:false}).pipe(gulpMocha({reporter:'my'}))
+})
